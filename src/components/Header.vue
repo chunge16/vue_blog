@@ -1,27 +1,43 @@
 <template>
-  <header :class="{'no-login': !isLogin, 'login': isLogin}">
-    <template v-if="isLogin">
-      <h1>LET'S SHARE</h1>
-      <i class="edit el-icon-edit"></i>
-      <img class="avatar" src="http://cn.gravatar.com/avatar/1?s=128&d=identicon" alt="">
-    </template>
-    <template v-else>
-      <h1>LET'S SHARE</h1>
+  <header :class="{login: isLogin, 'no-login': !isLogin}">
+    <template v-if="!isLogin">
+      <h1>Let's share</h1>
       <p>精品博客汇聚</p>
       <div class="btns">
-        <el-button>注册</el-button>
-        <el-button>登录</el-button>
+        <router-link to="/login"><el-button >立即登录</el-button></router-link>
+        <router-link to="/register"><el-button>注册账号</el-button></router-link>
+      </div>
+    </template>
+    <template v-if="isLogin">
+      <h1>Let's share</h1>
+      <i class="edit el-icon-edit"></i>
+      <div class="user">
+        <img class="avatar" :src="user.avatar" :alt="user.username" :title="user.username">
+        <ul>
+          <li><router-link to="my">我的</router-link></li>
+          <li><a href="#" @click="onLogout">注销</a></li>
+        </ul>
       </div>
     </template>
   </header>
 </template>
-
 <script>
+import {mapState, mapActions } from 'vuex'
+import auth from '@/api/auth'
+window.auth = auth
 export default {
   name: 'Header',
   data () {
-    return {
-      isLogin: false
+    return {}
+  },
+  computed: {
+    ...mapState('auth', ['isLogin', 'user'])
+    // ...mapGetters('auth', ['isLogin', 'user'])
+  },
+  methods: {
+    ...mapActions('auth', ['checkLogin', 'logout']),
+    onLogout () {
+      this.logout()
     }
   }
 }
