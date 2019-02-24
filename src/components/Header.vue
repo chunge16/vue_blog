@@ -8,9 +8,9 @@
         <router-link to="/register"><el-button>注册账号</el-button></router-link>
       </div>
     </template>
-    <template v-if="isLogin">
-      <h1>Let's share</h1>
-      <i class="edit el-icon-edit"></i>
+    <template v-else>
+      <h1><router-link to="/">Let's share</router-link></h1>
+      <router-link to="create"><i class="edit el-icon-plus"></i></router-link>
       <div class="user">
         <img class="avatar" :src="user.avatar" :alt="user.username" :title="user.username">
         <ul>
@@ -22,9 +22,7 @@
   </header>
 </template>
 <script>
-import {mapState, mapActions } from 'vuex'
-import auth from '@/api/auth'
-window.auth = auth
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Header',
   data () {
@@ -32,7 +30,9 @@ export default {
   },
   computed: {
     ...mapState('auth', ['isLogin', 'user'])
-    // ...mapGetters('auth', ['isLogin', 'user'])
+  },
+  created () {
+    this.checkLogin()
   },
   methods: {
     ...mapActions('auth', ['checkLogin', 'logout']),

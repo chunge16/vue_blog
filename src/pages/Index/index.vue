@@ -1,72 +1,125 @@
 <template>
   <div id="index">
     <section class="blog-posts">
-      <div class="item">
+      <router-link class="item" v-for="blog in newBlogs" :to="`/detail/${blog.id}`" :key="blog.id">
         <figure class="avatar">
-          <img src="http://cn.gravatar.com/avatar/1?s=128&d=identicon" alt="">
-          <figcaption>若愚</figcaption>
+          <img :src="blog.user.avatar" alt="">
+          <figcaption>{{blog.user.username}}</figcaption>
         </figure>
-        <h3>前端异步大揭秘 <span>3天前</span></h3>
-        <p>本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的 callback、ES2016中的Promise和Generator、 Node 用于解决回调的co 模块、ES2017中的async/await。适合初步接触 Node.js以及少量 ES6语法的同学阅读...</p>
-      </div>
-      <div class="item">
-        <figure class="avatar">
-          <img src="http://cn.gravatar.com/avatar/1?s=128&d=identicon" alt="">
-          <figcaption>若愚</figcaption>
-        </figure>
-        <h3>前端异步大揭秘 <span>3天前</span></h3>
-        <p>本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的 callback、ES2016中的Promise和Generator、 Node 用于解决回调的co 模块、ES2017中的async/await。适合初步接触 Node.js以及少量 ES6语法的同学阅读...</p>
-      </div>
+        <h3>{{blog.title}}<span>{{blog.relativeAt}}</span></h3>
+        <p>{{blog.description}}</p>
+      </router-link>
+    </section>
+    <section class="pagination">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :total="total"
+        :current-page.sync="page"
+      >
+      </el-pagination>
     </section>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
-import request from '@/utile/request.js'
-import auth from '@/API/auth.js'
-import blog from '@/API/blog.js'
-window.request = request
-window.auth = auth
-window.blog = blog
+import moment from 'moment'
+import blog from '@/API/blog'
 
 export default {
   name: 'index',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      blogs: [],
+      total: 0,
+      page: 1
     }
   },
-
-  methods: {
-    onClick1 () {
-      this.$message.error('错了哦，这是一条错误消息')
-    },
-
-    onClick2 () {
-      this.$alert('这是一段内容', '标题名称', {
-        confirmButtonText: '确定',
-        callback: action => {
-          this.$message.success('点了确定')
-        }
-      })
-    },
-    onClick3 () {
-      // this.$store.commit('setName', 'liu')
-      this.setName('liu2')
-    },
-    ...mapMutations(['increment', 'setName'])
+  created () {
+    this.page = parseInt(this.$route.query.page) || 1
+    blog.getIndexBlogs({page: this.page}).then(res => {
+      this.blogs = res.data
+      this.total = res.total
+      this.page = res.page
+    })
   },
   computed: {
-    ...mapState(['count']),
-    ...mapGetters(['fullName'])
+    newBlogs: function () {
+      let newBlogs = this.blogs.map((item) => {
+        item.relativeAt = moment(item.createdAt).fromNow()
+        return item
+      })
+      return newBlogs
+    }
+  },
+  methods: {
+    handleCurrentChange (val) {
+      blog.getIndexBlogs({page: val}).then(res => {
+        this.blogs = res.data
+        this.total = res.total
+        this.page = res.page
+        this.$router.push({
+          path: '/',
+          query: {page: val}
+        })
+      })
+    }
   }
 }
 </script>
 
 <style scoped lang="less">
-  @color: red;
-  h1 {
-    color: @color;
+  @import "../../assets/base";
+
+  #index {
+
+    .item {
+      display: grid;
+      grid: auto auto / 80px 1fr;
+      margin: 20px 0;
+
+      .avatar {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        justify-self: center;
+        margin-left: 0;
+        text-align: center;
+
+        img {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+        }
+
+        figcaption {
+          font-size: 12px;
+          color: @textLighterColor;
+        }
+      }
+
+      h3 {
+        grid-column: 2;
+        grid-row: 1;
+
+        &>span {
+          margin-left: 10px;
+          color: @textLighterColor;
+          font-size: 12px;
+          font-weight: normal;
+        }
+      }
+
+      p {
+        grid-column: 2;
+        grid-row: 2;
+        margin-top: 0;
+      }
+
+    }
+    .pagination {
+      display: grid;
+      justify-items: center;
+    }
+
   }
 </style>

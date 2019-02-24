@@ -14,7 +14,7 @@ import store from '../store'
 const Create = () => import('@/pages/Create')
 const Detail = () => import('@/pages/Detail')
 const Edit = () => import('@/pages/Edit')
-const Index = () => import('@/pages/Login')
+const Index = () => import('@/pages/Index')
 const Login = () => import('@/pages/Login')
 const My = () => import('@/pages/My')
 const Register = () => import('@/pages/Register')
@@ -45,8 +45,7 @@ const router = new Router({
     },
     {
       path: '/detail/:blogId',
-      component: Detail,
-      meta: { requiresAuth: true }
+      component: Detail
     },
     {
       path: '/edit/:blogId',
