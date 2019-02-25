@@ -11,13 +11,13 @@
       <el-form-item label="文章标题" prop="title" placeholder="请填写标题">
         <el-input v-model="ruleForm.title" placeholder="请填写标题"></el-input>
       </el-form-item>
-      <el-form-item label="内容简介" prop="content">
-        <el-input type="textarea" v-model="ruleForm.content" placeholder="请填写内容简介"></el-input>
+      <el-form-item label="内容简介" prop="description">
+        <el-input type="textarea" v-model="ruleForm.description" placeholder="请填写内容简介"></el-input>
       </el-form-item>
-      <el-form-item label="文章内容" prop="description" >
+      <el-form-item label="文章内容" prop="content" >
         <el-input
           type="textarea"
-          v-model="ruleForm.description"
+          v-model="ruleForm.content"
           placeholder="请填写文章内容"
           rows=20
         ></el-input>

@@ -62,7 +62,6 @@ export default {
   .avatar {
     grid-column: 1;
     grid-row: 1 / span 2;
-
     width: 60px;
     height: 60px;
     border-radius: 50%;

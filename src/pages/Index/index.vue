@@ -2,10 +2,12 @@
   <div id="index">
     <section class="blog-posts">
       <router-link class="item" v-for="blog in newBlogs" :to="`/detail/${blog.id}`" :key="blog.id">
-        <figure class="avatar">
-          <img :src="blog.user.avatar" alt="">
-          <figcaption>{{blog.user.username}}</figcaption>
-        </figure>
+        <router-link :to="`/user/${blog.user.id}`" class="avatar">
+          <figure>
+            <img :src="blog.user.avatar" alt="">
+            <figcaption>{{blog.user.username}}</figcaption>
+          </figure>
+        </router-link>
         <h3>{{blog.title}}<span>{{blog.relativeAt}}</span></h3>
         <p>{{blog.description}}</p>
       </router-link>
@@ -36,8 +38,15 @@ export default {
     }
   },
   created () {
+    const loading = this.$loading({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
     this.page = parseInt(this.$route.query.page) || 1
     blog.getIndexBlogs({page: this.page}).then(res => {
+      loading.close()
       this.blogs = res.data
       this.total = res.total
       this.page = res.page
@@ -54,7 +63,14 @@ export default {
   },
   methods: {
     handleCurrentChange (val) {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
       blog.getIndexBlogs({page: val}).then(res => {
+        loading.close()
         this.blogs = res.data
         this.total = res.total
         this.page = res.page
@@ -62,6 +78,8 @@ export default {
           path: '/',
           query: {page: val}
         })
+      }).catch(() => {
+        loading.close()
       })
     }
   }
@@ -82,6 +100,7 @@ export default {
         grid-column: 1;
         grid-row: 1 / span 2;
         justify-self: center;
+        align-self: center;
         margin-left: 0;
         text-align: center;
 
@@ -91,7 +110,12 @@ export default {
           border-radius: 50%;
         }
 
+        figure {
+          margin: 0;
+        }
+
         figcaption {
+          margin: 0;
           font-size: 12px;
           color: @textLighterColor;
         }

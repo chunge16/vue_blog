@@ -10,11 +10,11 @@
     </template>
     <template v-else>
       <h1><router-link to="/">Let's share</router-link></h1>
-      <router-link to="create"><i class="edit el-icon-plus"></i></router-link>
+      <router-link to="/create"><i class="edit el-icon-plus"></i></router-link>
       <div class="user">
         <img class="avatar" :src="user.avatar" :alt="user.username" :title="user.username">
         <ul>
-          <li><router-link to="my">我的</router-link></li>
+          <li><router-link to="/my">我的</router-link></li>
           <li><a href="#" @click="onLogout">注销</a></li>
         </ul>
       </div>
@@ -37,7 +37,11 @@ export default {
   methods: {
     ...mapActions('auth', ['checkLogin', 'logout']),
     onLogout () {
-      this.logout()
+      this.logout().then(() => {
+        this.$router.push({
+          path: '/'
+        })
+      })
     }
   }
 }

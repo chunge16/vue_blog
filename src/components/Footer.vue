@@ -9,7 +9,7 @@ export default {
   name: 'Footer',
   data () {
     return {
-      msg: '© xiedaimala.com 2018 wechat: xiedaimala01'
+      msg: '© chunge2016.online wechat: shi2012shiy'
     }
   }
 }
