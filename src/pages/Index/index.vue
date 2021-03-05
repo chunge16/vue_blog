@@ -50,6 +50,8 @@ export default {
       this.blogs = res.data
       this.total = res.total
       this.page = res.page
+    }).catch(() => {
+      loading.close()
     })
   },
   computed: {
@@ -137,6 +139,8 @@ export default {
         grid-column: 2;
         grid-row: 2;
         margin-top: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
     }

@@ -54,14 +54,18 @@ export default {
       rules: {
         title: [
           { required: true, message: '请输入文章标题', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+          { min: 10, max: 30, message: '长度在 10 到 30 个字符', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '请输入文章内容', trigger: 'blur' },
+          { min: 30, message: '文章简介至少30个字', trigger: 'blur' }
         ],
         content: [
           { required: true, message: '请输入内容简介', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
-        ],
-        description: [{ required: true, message: '请输入文章内容', trigger: 'blur' }]
+          { min: 200, message: '文章内容至少200个字', trigger: 'blur' }
+        ]
       }
+
     }
   },
   created () {

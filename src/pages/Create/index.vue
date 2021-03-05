@@ -11,7 +11,7 @@
       <el-form-item label="文章标题" prop="title" placeholder="请填写标题">
         <el-input v-model="ruleForm.title" placeholder="请填写标题"></el-input>
       </el-form-item>
-      <el-form-item label="内容简介" prop="description">
+      <el-form-item label="文章简介" prop="description">
         <el-input type="textarea" v-model="ruleForm.description" placeholder="请填写内容简介"></el-input>
       </el-form-item>
       <el-form-item label="文章内容" prop="content" >
@@ -52,13 +52,16 @@ export default {
       rules: {
         title: [
           { required: true, message: '请输入文章标题', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+          { min: 10, max: 30, message: '长度在 10 到 30 个字符', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '请输入文章内容', trigger: 'blur' },
+          { min: 30, message: '文章简介至少30个字', trigger: 'blur' }
         ],
         content: [
           { required: true, message: '请输入内容简介', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
-        ],
-        description: [{ required: true, message: '请输入文章内容', trigger: 'blur' }]
+          { min: 200, message: '文章内容至少200个字', trigger: 'blur' }
+        ]
       }
     }
   },
