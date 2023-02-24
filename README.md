@@ -15,7 +15,7 @@
 - 我的： 展示个人主页
 - 编辑、删除、创建博客
 
-## [预览地址](http://chunge2016.online/vue-blog-preview/#/)
+## [预览地址](https://chunge16.github.io/vue-blog-preview/#/)
 
 
 ## 技术栈
